@@ -260,6 +260,7 @@ export default {
           };
           fireAdd("notification", schedule);
         }
+        this.$router.push("/notify");
       } catch (error) {}
     },
     generateRecurrent(period, startAt, endAt, message, to, hour) {
