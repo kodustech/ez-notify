@@ -52,7 +52,7 @@ export default {
         },
         {
           icon: 'mdi-account',
-          title: 'Usuários',
+          title: 'Users',
           to: '/users'
         },
         {
@@ -62,7 +62,7 @@ export default {
         },
         {
           icon: 'mdi-slack',
-          title: 'Mensagens',
+          title: 'Messages',
           to: '/notify'
         }
       ],

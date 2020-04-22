@@ -16,25 +16,38 @@
               <v-spacer></v-spacer>
               <v-dialog v-model="dialog" max-width="300px">
                 <template v-slot:activator="{ on }">
-                  <v-btn color="primary" dark class="mb-2" v-on="on">Novo usuário</v-btn>
+                  <v-btn color="primary" dark class="mb-2" v-on="on">Create user</v-btn>
                 </template>
                 <v-card>
                   <v-card-title>
-                    <span class="headline">Novo Usuário</span>
+                    <span class="headline">New user</span>
                   </v-card-title>
 
                   <v-card-text>
                     <v-container>
-                      <v-row>
-                        <v-col cols="12" sm="12" md="12">
-                          <v-text-field v-model="email" label="E-mail" required></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="12" sm="12" md="12">
-                          <v-text-field v-model="password" label="Senha" type="password" required></v-text-field>
-                        </v-col>
-                      </v-row>
+                      <v-form ref="form">
+                        <v-row>
+                          <v-col cols="12" sm="12" md="12">
+                            <v-text-field
+                              v-model="email"
+                              :rules="rulesEmail"
+                              label="E-mail *"
+                              maxlength="40"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                        <v-row>
+                          <v-col cols="12" sm="12" md="12">
+                            <v-text-field
+                              v-model="password"
+                              :rules="rulesPassword"
+                              label="Password *"
+                              type="password"
+                              maxlength="20"
+                            ></v-text-field>
+                          </v-col>
+                        </v-row>
+                      </v-form>
                       <v-row>
                         <v-col cols="12" sm="12" md="12">{{ message }}</v-col>
                       </v-row>
@@ -43,8 +56,8 @@
 
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-                    <v-btn color="blue darken-1" text @click="save">Salvar</v-btn>
+                    <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+                    <v-btn color="blue darken-1" text @click="save">Save</v-btn>
                   </v-card-actions>
                 </v-card>
               </v-dialog>
@@ -54,7 +67,7 @@
             <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
           </template>-->
           <template v-slot:no-data>
-            <p>Nenhum registro encontrado</p>
+            <p>No records found</p>
           </template>
         </v-data-table>
       </v-row>
@@ -65,6 +78,7 @@
 import { mapGetters } from "vuex";
 import { auth } from "firebase";
 import { fireCollRef, fireSet, fireDelete } from "~/service/firebase.js";
+import { emailValidation, minLength, required } from "~/utils/fieldRules.js";
 
 export default {
   layout: "default",
@@ -84,7 +98,9 @@ export default {
         }
         /* { text: "Ações", value: "actions", sortable: false } */
       ],
-      items: []
+      items: [],
+      rulesEmail: [emailValidation, required],
+      rulesPassword: [value => minLength(value, 6), required]
     };
   },
   computed: {
@@ -118,6 +134,9 @@ export default {
     }, */
     async save() {
       try {
+        const validate = this.$refs.form.validate();
+        if (!validate) return;
+
         const data = await auth().createUserWithEmailAndPassword(
           this.email,
           this.password
@@ -134,6 +153,7 @@ export default {
       }
     },
     close() {
+      this.email = this.password = this.message = "";
       this.dialog = false;
     }
   }

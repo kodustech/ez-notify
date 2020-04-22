@@ -6,16 +6,27 @@
           <v-col cols="12">
             <v-row align="center" justify="center">
               <v-card class="ma-4 pa-6" outlined tile min-width="400">
-                <v-form @submit="submit">
-                  <v-text-field v-model="name" label="Nome da organização" required></v-text-field>
-                  <v-text-field v-model="email" label="E-mail" required></v-text-field>
-                  <v-text-field v-model="password" label="Senha" type="password" required></v-text-field>
+                <v-form ref="form" @submit="submit">
+                  <v-text-field
+                    v-model="name"
+                    :rules="rulesName"
+                    label="Organization name *"
+                    maxlength="40"
+                  ></v-text-field>
+                  <v-text-field v-model="email" :rules="rulesEmail" label="E-mail *" maxlength="40"></v-text-field>
+                  <v-text-field
+                    v-model="password"
+                    :rules="rulesPassword"
+                    label="Password *"
+                    type="password"
+                    maxlength="20"
+                  ></v-text-field>
                   <div class="my-2">
-                    <v-btn type="submit" color="primary" :loading="loading">Criar organização</v-btn>
+                    <v-btn type="submit" color="primary" :loading="loading">Create organization</v-btn>
                   </div>
                   <p>{{ message }}</p>
                 </v-form>
-                <nuxt-link to="/login">Voltar</nuxt-link>
+                <nuxt-link to="/login">Back to login</nuxt-link>
               </v-card>
             </v-row>
           </v-col>
@@ -26,7 +37,9 @@
 </template>
 <script>
 import { auth } from "firebase";
+
 import { fireSet } from "~/service/firebase.js";
+import { emailValidation, minLength, required } from "~/utils/fieldRules.js";
 
 export default {
   layout: "login",
@@ -36,13 +49,19 @@ export default {
       email: "",
       password: "",
       message: "",
-      loading: false
+      loading: false,
+      rulesName: [value => minLength(value, 3), required],
+      rulesEmail: [emailValidation, required],
+      rulesPassword: [value => minLength(value, 6), required]
     };
   },
   methods: {
     async submit(e) {
       try {
         e.preventDefault();
+        const validate = this.$refs.form.validate();
+        if (!validate) return;
+
         this.loading = true;
         this.message = "";
         const data = await auth().createUserWithEmailAndPassword(
@@ -56,7 +75,7 @@ export default {
         this.$router.push("/login");
       } catch (error) {
         this.loading = false;
-        this.message = "Erro ao criar organização";
+        this.message = error.message;
       }
     }
   }

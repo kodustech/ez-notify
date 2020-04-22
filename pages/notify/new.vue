@@ -4,120 +4,137 @@
       <v-row align="center" justify="center">
         <v-card-text>
           <v-container>
-            <v-row>
-              <v-col cols="12" sm="12" md="12">
-                <v-select
-                  v-model="slackMembersSelecteds"
-                  chips
-                  :items="slackMembers"
-                  :multiple="true"
-                  :append-icon="'mdi-plus'"
-                  label="Quem vai receber?"
-                />
-              </v-col>
-            </v-row>
+            <v-form ref="form">
+              <v-row>
+                <v-col cols="12" sm="12" md="12">
+                  <v-select
+                    v-model="slackMembersSelecteds"
+                    chips
+                    multiple
+                    label="Who will receive? *"
+                    :rules="rulesRequired"
+                    :items="slackMembers"
+                    :append-icon="'mdi-plus'"
+                  />
+                </v-col>
+              </v-row>
 
-            <v-row>
-              <v-col cols="12" sm="12" md="12">
-                <v-switch v-model="recurrent" class="ma-2" label="Recorrente?"></v-switch>
-              </v-col>
-            </v-row>
+              <v-row>
+                <v-col cols="12" sm="12" md="12">
+                  <v-switch v-model="recurrent" class="ma-2" label="Recurrent?"></v-switch>
+                </v-col>
+              </v-row>
 
-            <v-row v-if="!recurrent">
-              <v-col cols="12" lg="3">
-                <v-menu
-                  ref="menu1"
-                  v-model="menu1"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  max-width="290px"
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="dateFormatted1"
-                      label="Quando?"
-                      persistent-hint
-                      @blur="date = parseDate(dateFormatted1)"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
-                </v-menu>
-              </v-col>
-              <v-col cols="12" lg="3">
-                <v-select v-model="hour" :items="hours" label="Hora" />
-              </v-col>
-            </v-row>
-            <v-row v-else>
-              <v-col cols="12" lg="3">
-                <v-menu
-                  ref="menu2"
-                  v-model="menu2"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  max-width="290px"
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="dateFormatted2"
-                      label="Data Início"
-                      persistent-hint
-                      @blur="startAt = parseDate(dateFormatted2)"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker v-model="startAt" no-title @input="menu2 = false"></v-date-picker>
-                </v-menu>
-              </v-col>
-              <v-col cols="12" lg="3">
-                <v-menu
-                  ref="menu3"
-                  v-model="menu3"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  max-width="290px"
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="dateFormatted3"
-                      label="Data Fim"
-                      persistent-hint
-                      @blur="endAt = parseDate(dateFormatted3)"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker v-model="endAt" no-title @input="menu3 = false"></v-date-picker>
-                </v-menu>
-              </v-col>
-              <v-col cols="12" lg="3">
-                <v-select v-model="hour" :items="hours" label="Hora" />
-              </v-col>
-              <v-col cols="12" lg="3">
-                <v-select v-model="period" :items="periods" label="Periodicidade" />
-              </v-col>
-            </v-row>
+              <v-row v-if="!recurrent">
+                <v-col cols="12" lg="3">
+                  <v-menu
+                    ref="menu1"
+                    v-model="menu1"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    max-width="290px"
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="dateFormatted1"
+                        label="When? *"
+                        persistent-hint
+                        :rules="rulesRequired"
+                        @blur="date = parseDate(dateFormatted1)"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
+                  </v-menu>
+                </v-col>
+                <v-col cols="12" lg="3">
+                  <v-select v-model="hour" :rules="rulesRequired" :items="hours" label="Hour *" />
+                </v-col>
+              </v-row>
+              <v-row v-else>
+                <v-col cols="12" lg="3">
+                  <v-menu
+                    ref="menu2"
+                    v-model="menu2"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    max-width="290px"
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="dateFormatted2"
+                        label="Start date *"
+                        persistent-hint
+                        :rules="rulesRequired"
+                        @blur="startAt = parseDate(dateFormatted2)"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="startAt" no-title @input="menu2 = false"></v-date-picker>
+                  </v-menu>
+                </v-col>
+                <v-col cols="12" lg="3">
+                  <v-menu
+                    ref="menu3"
+                    v-model="menu3"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    max-width="290px"
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="dateFormatted3"
+                        label="End date *"
+                        persistent-hint
+                        :rules="rulesRequired"
+                        @blur="endAt = parseDate(dateFormatted3)"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="endAt" no-title @input="menu3 = false"></v-date-picker>
+                  </v-menu>
+                </v-col>
+                <v-col cols="12" lg="3">
+                  <v-select v-model="hour" :rules="rulesRequired" :items="hours" label="Hour *" />
+                </v-col>
+                <v-col cols="12" lg="3">
+                  <v-select
+                    v-model="period"
+                    :rules="rulesRequired"
+                    :items="periods"
+                    label="Frequency *"
+                  />
+                </v-col>
+              </v-row>
 
-            <v-row>
-              <v-col cols="12" lg="12">
-                <v-textarea v-model="message" label="Mensagem"></v-textarea>
-              </v-col>
-            </v-row>
+              <v-row>
+                <v-col cols="12" lg="12">
+                  <v-textarea
+                    v-model="message"
+                    counter="300"
+                    maxlength="300"
+                    :rules="rulesRequired"
+                    label="Message *"
+                  ></v-textarea>
+                </v-col>
+              </v-row>
 
-            <v-row>
-              <!-- <v-col cols="12" sm="12" md="12">{{ message }}</v-col> -->
-            </v-row>
+              <v-row>
+                <!-- <v-col cols="12" sm="12" md="12">{{ message }}</v-col> -->
+              </v-row>
+            </v-form>
           </v-container>
         </v-card-text>
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" class="mb-2" @click="save">Salvar</v-btn>
+          <v-btn color="primary" class="mb-2" @click="save">Save</v-btn>
         </v-card-actions>
       </v-row>
     </v-col>
@@ -127,6 +144,7 @@
 import { mapGetters } from "vuex";
 import { orderBy } from "lodash";
 import moment from "moment";
+
 import {
   fireCollRef,
   fireSet,
@@ -135,6 +153,7 @@ import {
   fireAdd
 } from "~/service/firebase.js";
 import { slackGetMembers, slackGetBotToken } from "~/service/slack.js";
+import { required } from "~/utils/fieldRules.js";
 
 export default {
   layout: "default",
@@ -166,18 +185,20 @@ export default {
       period: null,
       periods: [
         {
-          text: "Diária",
+          text: "Daily",
           value: "d"
         },
         {
-          text: "Semanal",
+          text: "Weekly",
           value: "w"
         },
         {
-          text: "Mensal",
+          text: "Monthly",
           value: "M"
         }
-      ]
+      ],
+
+      rulesRequired: [required]
     };
   },
   computed: {
@@ -222,20 +243,31 @@ export default {
       }
     },
     formatDate(date) {
-      if (!date) return null;
-      const [year, month, day] = date.split("-");
-      return `${day}/${month}/${year}`;
+      try {
+        if (!date) return null;
+        const [year, month, day] = date.split("-");
+        return `${day}/${month}/${year}`;
+      } catch (error) {
+        return null;
+      }
     },
     parseDate(date) {
-      if (!date) return null;
-      const [day, month, year] = date.split("/");
-      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+      try {
+        if (!date) return null;
+        const [day, month, year] = date.split("/");
+        return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+      } catch (error) {
+        return null;
+      }
     },
     getHours() {
-      return [...Array(24).keys()].map(x => (x > 9 ? `${x}:00` : `0${x}:00`));
+      return [...Array(24).keys()].map(x => (`${x}`.padStart(2, "0") + ':00'));
     },
     async save() {
       try {
+        const validate = this.$refs.form.validate();
+        if (!validate) return;
+
         if (this.recurrent) {
           const schedules = this.generateRecurrent(
             this.period,

@@ -13,17 +13,17 @@
             <v-toolbar-title>{{ getOrganization.name }}</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <v-btn color="primary" dark class="mb-2" @click="NewMessage">Nova mensagem</v-btn>
+            <v-btn color="primary" dark class="mb-2" @click="NewMessage">New message</v-btn>
           </v-toolbar>
         </template>
 
         <template v-slot:item.sended="{ item }">
-          <v-chip v-if="item.sended" color="green" dark>SIM</v-chip>
-          <v-chip v-else color="red" dark>NÃO</v-chip>
+          <v-chip v-if="item.sended" color="green" dark>YES</v-chip>
+          <v-chip v-else color="red" dark>NO</v-chip>
         </template>
 
         <template v-slot:no-data>
-          <p>Nenhum registro encontrado</p>
+          <p>No records found</p>
         </template>
       </v-data-table>
     </v-col>
@@ -42,25 +42,25 @@ export default {
       editedItem: {},
       headers: [
         {
-          text: "Data/Hora",
+          text: "Date/Hour to send",
           align: "start",
           sortable: false,
           value: "datetime"
         },
         {
-          text: "Mensagem",
+          text: "Message",
           align: "start",
           sortable: false,
           value: "message"
         },
         {
-          text: "Quem recebe",
+          text: "Who receive",
           align: "start",
           sortable: false,
           value: "members"
         },
         {
-          text: "Enviado?",
+          text: "Sended?",
           align: "start",
           sortable: false,
           value: "sended"

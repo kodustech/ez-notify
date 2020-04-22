@@ -2,11 +2,18 @@
   <div>
     <v-row>
       <v-col cols="12" lg="10">
-        <v-text-field v-model="slackBotToken" label="Slack bot token" required></v-text-field>
+        <v-form ref="form">
+          <v-text-field
+            v-model="slackBotToken"
+            :rules="rulesToken"
+            label="Slack bot token *"
+            required
+          ></v-text-field>
+        </v-form>
       </v-col>
       <v-col cols="12" lg="2">
         <div class="my-2">
-          <v-btn @click="saveBotToken" color="primary" :loading="loadingAdd">Salvar</v-btn>
+          <v-btn @click="saveBotToken" color="primary" :loading="loadingAdd">Save</v-btn>
         </div>
       </v-col>
     </v-row>
@@ -14,7 +21,7 @@
       <v-row>
         <v-col cols="12" lg="10">
           <v-alert v-if="!permissionTeamInfo" type="error">
-            Slack bot sem permissão
+            Slack bot with out permission
             <b>
               <a style="color:#0000ff" href="https://api.slack.com/scopes/team:read">team:read</a>
             </b>
@@ -29,25 +36,25 @@
 
         <v-col cols="12" lg="10">
           <v-alert v-if="!permissionUsersInfo" type="error">
-            Slack bot sem permissão
+            Slack bot with out permission
             <b>
               <a style="color:#0000ff" href="https://api.slack.com/scopes/users:read">users:read</a>
             </b>
           </v-alert>
           <v-alert v-else type="success">
-            <p>{{ slackMembersCount }} membros ativos</p>
+            <p>{{ slackMembersCount }} active members</p>
           </v-alert>
         </v-col>
 
         <v-col cols="12" lg="10">
           <v-alert v-if="!permissionsSendMessage" type="error">
-            Slack bot sem permissão
+            Slack bot with out permission
             <b>
               <a style="color:#0000ff" href="https://api.slack.com/scopes/chat:write">chat:write</a>
             </b>
           </v-alert>
           <v-alert v-else type="success">
-            <p color="success">Permissão para enviar mensagem: OK</p>
+            <p color="success">Permission to send message: OK</p>
           </v-alert>
         </v-col>
       </v-row>
@@ -59,6 +66,7 @@
 import { mapGetters } from "vuex";
 import { fireGet, fireSet, fireUpdate } from "~/service/firebase.js";
 import { slackGetMembers, slackGetBotToken } from "~/service/slack.js";
+import { startsWith, required } from "~/utils/fieldRules.js";
 
 export default {
   async mounted() {
@@ -79,7 +87,8 @@ export default {
       permissionsSendMessage: true,
       slackIcon: "",
       slackName: "",
-      slackMembersCount: 0
+      slackMembersCount: 0,
+      rulesToken: [v => startsWith(v, "xoxb-"), required]
     };
   },
   computed: {
@@ -87,7 +96,7 @@ export default {
   },
   methods: {
     async getSlackBotToken() {
-      const token = await slackGetBotToken()
+      const token = await slackGetBotToken();
       if (token) {
         this.hasSlackBotToken = true;
         this.slackBotToken = token;
@@ -139,6 +148,9 @@ export default {
     },
     async saveBotToken() {
       try {
+        const validate = this.$refs.form.validate();
+        if (!validate) return;
+
         this.loadingAdd = true;
         if (this.hasSlackBotToken) {
           await fireUpdate("slack", this.getOrganization.uid, {

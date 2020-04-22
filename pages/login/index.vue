@@ -6,19 +6,25 @@
           <v-col cols="12">
             <v-row align="center" justify="center">
               <v-card class="ma-4 pa-6" outlined tile>
-                <v-form @submit="submit">
+                <v-form ref="form" @submit="submit">
                   <img
                     alt="Ez"
                     src="https://i2.wp.com/ezdevs.com.br/wp-content/uploads/2020/03/ezdevs-logo-fd-escuro-semdisrup.png?resize=300%2C83&ssl=1"
                   />
-                  <v-text-field v-model="email" label="E-mail" required></v-text-field>
-                  <v-text-field v-model="password" label="Senha" type="password" required></v-text-field>
+                  <v-text-field v-model="email" :rules="rulesEmail" label="E-mail" maxlength="40"></v-text-field>
+                  <v-text-field
+                    v-model="password"
+                    :rules="rulesPassword"
+                    label="Password"
+                    type="password"
+                    maxlength="20"
+                  ></v-text-field>
                   <div class="my-2">
                     <v-btn type="submit" color="primary" :loading="loading">Login</v-btn>
                   </div>
                   <p>{{ message }}</p>
                 </v-form>
-                <nuxt-link to="/new-organization">Nova organização</nuxt-link>
+                <nuxt-link to="/new-organization">New organization</nuxt-link>
               </v-card>
             </v-row>
           </v-col>
@@ -30,8 +36,10 @@
 
 <script>
 import { auth } from "firebase";
-import { fireGet } from "~/service/firebase.js";
 import { mapMutations } from "vuex";
+
+import { fireGet } from "~/service/firebase.js";
+import { emailValidation, minLength, required } from "~/utils/fieldRules.js";
 
 export default {
   layout: "login",
@@ -40,7 +48,9 @@ export default {
       email: "",
       password: "",
       message: "",
-      loading: false
+      loading: false,
+      rulesEmail: [emailValidation, required],
+      rulesPassword: [value => minLength(value, 6), required]
     };
   },
   methods: {
@@ -49,6 +59,9 @@ export default {
     async submit(e) {
       try {
         e.preventDefault();
+        const validate = this.$refs.form.validate();
+        if (!validate) return;
+
         this.loading = true;
         this.message = "";
         const data = await auth().signInWithEmailAndPassword(
@@ -74,9 +87,8 @@ export default {
 
         this.$router.push("/");
       } catch (error) {
-        console.log("submit -> error", error);
         this.loading = false;
-        this.message = "Usuário ou senha inválida";
+        this.message = error.message;
       }
     }
   }
