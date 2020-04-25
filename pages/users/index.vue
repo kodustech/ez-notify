@@ -48,9 +48,6 @@
                           </v-col>
                         </v-row>
                       </v-form>
-                      <v-row>
-                        <v-col cols="12" sm="12" md="12">{{ message }}</v-col>
-                      </v-row>
                     </v-container>
                   </v-card-text>
 
@@ -86,7 +83,6 @@ export default {
     return {
       email: "",
       password: "",
-      message: "",
       dialog: false,
       editedItem: {},
       headers: [
@@ -148,8 +144,9 @@ export default {
         });
         this.getUsers();
         this.close();
+        this.showSuccessMessage({ message: "user created successfully" });
       } catch (error) {
-        this.message = error.message;
+        this.showErrorMessage({ message: error.message });
       }
     },
     close() {

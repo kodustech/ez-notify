@@ -14,9 +14,3 @@ export const mutations = {
     state.organization = payload
   }
 }
-
-export const actions = {
-  teste({state}) {
-    console.log('to na action', state.organization)
-  }
-}

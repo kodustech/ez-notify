@@ -31,14 +31,19 @@
         ❤ {{ new Date().getFullYear() }}
       </span>
     </v-footer>
+
+    <snackbar />
   </v-app>
 </template>
 
 <script>
 import { auth } from "firebase";
 
+import Snackbar from '~/components/snackbar'
+
 export default {
   middleware: ['authenticated'],
+  components: { Snackbar },
   data () {
     return {
       clipped: true,

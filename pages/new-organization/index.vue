@@ -24,7 +24,6 @@
                   <div class="my-2">
                     <v-btn type="submit" color="primary" :loading="loading">Create organization</v-btn>
                   </div>
-                  <p>{{ message }}</p>
                 </v-form>
                 <nuxt-link to="/login">Back to login</nuxt-link>
               </v-card>
@@ -48,7 +47,6 @@ export default {
       name: "",
       email: "",
       password: "",
-      message: "",
       loading: false,
       rulesName: [value => minLength(value, 3), required],
       rulesEmail: [emailValidation, required],
@@ -72,10 +70,14 @@ export default {
         await fireSet("organization", uid, { name: this.name });
         await fireSet("user", uid, { email: this.email, organizationId: uid });
 
+        this.showSuccessMessage({
+          message: "Organization successfully created"
+        });
+
         this.$router.push("/login");
       } catch (error) {
         this.loading = false;
-        this.message = error.message;
+        this.showErrorMessage({ message: error.message });
       }
     }
   }

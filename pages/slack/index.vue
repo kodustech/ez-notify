@@ -166,8 +166,10 @@ export default {
         await this.getSlackUsersInfo();
         await this.canSendMessage();
         this.loadingAdd = false;
+        this.showSuccessMessage({ message: "Saved successfully" });
       } catch (error) {
         this.loadingAdd = false;
+        this.showErrorMessage({ message: error.message });
       }
     }
   }

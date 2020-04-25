@@ -261,7 +261,7 @@ export default {
       }
     },
     getHours() {
-      return [...Array(24).keys()].map(x => (`${x}`.padStart(2, "0") + ':00'));
+      return [...Array(24).keys()].map(x => `${x}`.padStart(2, "0") + ":00");
     },
     async save() {
       try {
@@ -292,8 +292,11 @@ export default {
           };
           fireAdd("notification", schedule);
         }
+        this.showSuccessMessage({ message: "Messages successfully scheduled" });
         this.$router.push("/notify");
-      } catch (error) {}
+      } catch (error) {
+        this.showErrorMessage({ message: error.message });
+      }
     },
     generateRecurrent(period, startAt, endAt, message, to, hour) {
       let lastDate = moment(startAt);
