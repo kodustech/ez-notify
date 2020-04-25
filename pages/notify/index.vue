@@ -18,8 +18,8 @@
         </template>
 
         <template v-slot:item.sended="{ item }">
-          <v-chip v-if="item.sended" color="green" dark>YES</v-chip>
-          <v-chip v-else color="red" dark>NO</v-chip>
+          <v-chip v-if="item.sended" color="green" dark>Sended</v-chip>
+          <v-chip v-else color="blue" dark>Scheduled</v-chip>
         </template>
 
         <template v-slot:no-data>
@@ -60,7 +60,7 @@ export default {
           value: "members"
         },
         {
-          text: "Sended?",
+          text: "Status",
           align: "start",
           sortable: false,
           value: "sended"
@@ -84,6 +84,8 @@ export default {
       const notificationsRef = fireCollRef("notification");
       const snapshot = await notificationsRef
         .where("organizationId", "==", this.getOrganization.uid)
+        .orderBy("date")
+        .orderBy("hour")
         .get();
 
       if (!snapshot.empty) {

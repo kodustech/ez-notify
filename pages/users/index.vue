@@ -111,6 +111,7 @@ export default {
       const userRef = fireCollRef("user");
       const snapshot = await userRef
         .where("organizationId", "==", this.getOrganization.uid)
+        .orderBy("email")
         .get();
 
       if (!snapshot.empty) {
