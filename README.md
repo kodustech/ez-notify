@@ -48,6 +48,10 @@ $ yarn install
 $ yarn dev
 ```
 
+## Cron function
+function that will be triggered hourly to send scheduled messages:
+[Cron function](https://github.com/ezDevs/ez-notify-cron)
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
