@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-navigation-drawer v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app>
       <v-list>
         <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact>
@@ -12,12 +12,17 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
+    <v-app-bar :clipped-left="clipped" fixed app class="nav-bar">
+      <v-app-bar-nav-icon color="white" @click.stop="drawer = !drawer" />
+      <!-- <v-toolbar-title v-text="title" /> -->
+      <img
+        alt="Ez"
+        width="150"
+        src="~/static/eznotify-white.png"
+      />
       <v-spacer />
 
-      <v-icon @click="logout">mdi-logout</v-icon>
+      <v-icon @click="logout" color="white">mdi-logout</v-icon>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -27,8 +32,11 @@
 
     <v-footer :fixed="fixed" app>
       <span>
-        <a href="https://ezdevs.com.br/">Ez.devs</a>
-        ❤ {{ new Date().getFullYear() }}
+        Make with
+        <span style="color:red">❤</span>
+        by
+        <a href="https://ezdevs.com.br/">Ez.devs</a> - 
+        {{ new Date().getFullYear() }}
       </span>
     </v-footer>
 
@@ -85,3 +93,13 @@ export default {
   }
 }
 </script>
+
+<style>
+.nav-bar {
+  background: linear-gradient(
+    307deg,
+    #00BFA6 0%,
+    #00BFA6 100%
+  );
+}
+</style>

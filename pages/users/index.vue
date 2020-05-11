@@ -10,13 +10,13 @@
           :items-per-page="10"
         >
           <template v-slot:top>
-            <v-toolbar flat color="dark">
+            <v-toolbar flat>
               <v-toolbar-title>{{ getOrganization.name }}</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
               <v-dialog v-model="dialog" max-width="300px">
                 <template v-slot:activator="{ on }">
-                  <v-btn color="primary" dark class="mb-2" v-on="on">Create user</v-btn>
+                  <v-btn color="primary" class="mb-2" v-on="on">Create user</v-btn>
                 </template>
                 <v-card>
                   <v-card-title>

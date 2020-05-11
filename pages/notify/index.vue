@@ -9,17 +9,17 @@
         :items-per-page="10"
       >
         <template v-slot:top>
-          <v-toolbar flat color="dark">
+          <v-toolbar flat>
             <v-toolbar-title>{{ getOrganization.name }}</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
-            <v-btn color="primary" dark class="mb-2" @click="NewMessage">New message</v-btn>
+            <v-btn color="primary" class="mb-2" @click="NewMessage">New message</v-btn>
           </v-toolbar>
         </template>
 
         <template v-slot:item.sended="{ item }">
-          <v-chip v-if="item.sended" color="green" dark>Sended</v-chip>
-          <v-chip v-else color="blue" dark>Scheduled</v-chip>
+          <v-chip v-if="item.sended" class="status" color="green">Sended</v-chip>
+          <v-chip v-else class="status" color="blue">Scheduled</v-chip>
         </template>
 
         <template v-slot:no-data>
@@ -116,3 +116,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.theme--light.v-chip {
+  color: #fff;
+}
+</style>
