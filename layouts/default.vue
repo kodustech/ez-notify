@@ -74,7 +74,7 @@ export default {
           to: '/slack'
         },
         {
-          icon: 'mdi-slack',
+          icon: 'mdi-message-text-clock',
           title: 'Messages',
           to: '/notify'
         }
