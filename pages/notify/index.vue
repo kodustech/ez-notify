@@ -2,35 +2,44 @@
   <div>
     <v-row>
       <v-col cols="12" md="12" lg="12">
-        <v-data-table
-          item-key="uid"
-          class="elevation-1"
-          :headers="headers"
-          :items="items"
-          :items-per-page="10"
-        >
-          <template v-slot:top>
-            <v-toolbar flat>
-              <v-toolbar-title>{{ getOrganization.name }}</v-toolbar-title>
-              <v-divider class="mx-4" inset vertical></v-divider>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" class="mb-2" @click="NewMessage">New message</v-btn>
-            </v-toolbar>
-          </template>
+        <v-tabs v-model="tab" background-color="primary" class="elevation-2" @change="changeTab">
+          <v-tabs-slider></v-tabs-slider>
 
-          <template v-slot:item.sended="{ item }">
-            <v-chip v-if="item.sended" class="status" color="green">Sended</v-chip>
-            <v-chip v-else class="status" color="blue">Scheduled</v-chip>
-          </template>
+          <v-tab :href="`#scheduled`">Scheduleds</v-tab>
+          <v-tab :href="`#sended`">Sended</v-tab>
 
-          <template v-slot:item.actions="{ item }">
-            <v-icon color="error" @click="openDialog(item)">mdi-delete</v-icon>
-          </template>
+          <v-tab-item :value="tab">
+            <v-data-table
+              item-key="uid"
+              class="elevation-1"
+              :headers="headers"
+              :items="itemsFiltered"
+              :items-per-page="10"
+            >
+              <template v-slot:top>
+                <v-toolbar flat>
+                  <v-toolbar-title>{{ getOrganization.name }}</v-toolbar-title>
+                  <v-divider class="mx-4" inset vertical></v-divider>
+                  <v-spacer></v-spacer>
+                  <v-btn color="primary" class="mb-2" @click="NewMessage">New message</v-btn>
+                </v-toolbar>
+              </template>
 
-          <template v-slot:no-data>
-            <p>No records found</p>
-          </template>
-        </v-data-table>
+              <template v-slot:item.sended="{ item }">
+                <v-chip v-if="item.sended" class="status" color="green">Sended</v-chip>
+                <v-chip v-else class="status" color="blue">Scheduled</v-chip>
+              </template>
+
+              <template v-slot:item.actions="{ item }">
+                <v-icon color="error" @click="openDialog(item)">mdi-delete</v-icon>
+              </template>
+
+              <template v-slot:no-data>
+                <p>No records found</p>
+              </template>
+            </v-data-table>
+          </v-tab-item>
+        </v-tabs>
       </v-col>
     </v-row>
     <v-dialog v-model="dialog" max-width="290">
@@ -57,6 +66,7 @@ export default {
   layout: "default",
   data() {
     return {
+      tab: "scheduleds",
       dialog: false,
       itemToDelete: {},
       headers: [
@@ -87,6 +97,7 @@ export default {
         { text: "Actions", value: "actions", sortable: false }
       ],
       items: [],
+      itemsFiltered: [],
       slackMembers: []
     };
   },
@@ -120,6 +131,7 @@ export default {
             uid: doc.id
           });
         });
+        this.itemsFiltered = this.items.filter(x => !x.sended);
       }
     },
     getUsersName(ids) {
@@ -137,7 +149,15 @@ export default {
     deleteItem() {
       fireDelete("notification", this.itemToDelete.uid);
       this.items = this.items.filter(x => x.uid !== this.itemToDelete.uid);
-      this.dialog = false
+      this.itemsFiltered = this.itemsFiltered.filter(
+        x => x.uid !== this.itemToDelete.uid
+      );
+      this.dialog = false;
+    },
+    changeTab() {
+      this.tab === "sended"
+        ? (this.itemsFiltered = this.items.filter(x => x.sended))
+        : (this.itemsFiltered = this.items.filter(x => !x.sended));
     },
     NewMessage() {
       this.$router.push("/notify/new");
