@@ -32,7 +32,7 @@
 
     <v-footer :fixed="fixed" app>
       <span>
-        Make with
+        Made with
         <span style="color:red">❤</span>
         by
         <a href="https://ezdevs.com.br/">Ez.devs</a> - 
