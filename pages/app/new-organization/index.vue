@@ -74,7 +74,7 @@ export default {
           message: "Organization successfully created"
         });
 
-        this.$router.push("/login");
+        this.$router.push("/app/login");
       } catch (error) {
         this.loading = false;
         this.showErrorMessage({ message: error.message });

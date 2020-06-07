@@ -87,7 +87,7 @@ export default {
         /* const { uid, refreshToken, email } = auth().currentUser;
         localStorage.setItem('currentUser', JSON.stringify({ uid, refreshToken, email })); */
 
-        this.$router.push("/");
+        this.$router.push("/app");
       } catch (error) {
         this.loading = false;
         this.showErrorMessage({ message: error.message });
@@ -119,12 +119,8 @@ export default {
 }
 
 .login .form-login .v-card button.v-btn {
-  background: #00BFA6;
-  background: linear-gradient(
-    307deg,
-    #00BFA6 0%,
-    #00937f 100%
-  );
+  background: #00bfa6;
+  background: linear-gradient(307deg, #00bfa6 0%, #00937f 100%);
   border-radius: 10px;
   padding: 15px 30px;
   height: auto;
@@ -158,12 +154,8 @@ export default {
   margin: 0 0 15px 0;
 }
 .login .msg-login {
-  background: #00BFA6;
-  background: linear-gradient(
-    307deg,
-    #00BFA6 0%,
-    #005AD5 100%
-  );
+  background: #00bfa6;
+  background: linear-gradient(307deg, #00bfa6 0%, #005ad5 100%);
   display: flex;
   align-items: flex-start;
   flex-direction: column;

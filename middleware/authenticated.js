@@ -2,7 +2,7 @@ import { auth } from 'firebase';
 
 export default function({ redirect }) {
   if (!auth().currentUser) {
-   redirect('/login')
+   redirect('/app/login')
   }
   /* setTimeout(() => {
     const user = localStorage.getItem('currentUser');

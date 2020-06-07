@@ -15,11 +15,7 @@
     <v-app-bar :clipped-left="clipped" fixed app class="nav-bar">
       <v-app-bar-nav-icon color="white" @click.stop="drawer = !drawer" />
       <!-- <v-toolbar-title v-text="title" /> -->
-      <img
-        alt="Ez"
-        width="150"
-        src="~/static/eznotify-white.png"
-      />
+      <img alt="Ez" width="150" src="~/static/eznotify-white.png" />
       <v-spacer />
 
       <v-icon @click="logout" color="white">mdi-logout</v-icon>
@@ -35,7 +31,8 @@
         Made with
         <span style="color:red">❤</span>
         by
-        <a href="https://ezdevs.com.br/">Ez.devs</a> - 
+        <a href="https://ezdevs.com.br/">Ez.devs</a>
+        -
         {{ new Date().getFullYear() }}
       </span>
     </v-footer>
@@ -47,59 +44,55 @@
 <script>
 import { auth } from "firebase";
 
-import Snackbar from '~/components/snackbar'
+import Snackbar from "~/components/snackbar";
 
 export default {
-  middleware: ['authenticated'],
+  middleware: ["authenticated"],
   components: { Snackbar },
-  data () {
+  data() {
     return {
       clipped: true,
       drawer: false,
       fixed: true,
       items: [
         {
-          icon: 'mdi-home',
-          title: 'Home',
-          to: '/'
+          icon: "mdi-home",
+          title: "Home",
+          to: "/app"
         },
         {
-          icon: 'mdi-account',
-          title: 'Users',
-          to: '/users'
+          icon: "mdi-account",
+          title: "Users",
+          to: "/app/users"
         },
         {
-          icon: 'mdi-slack',
-          title: 'Slack',
-          to: '/slack'
+          icon: "mdi-slack",
+          title: "Slack",
+          to: "/app/slack"
         },
         {
-          icon: 'mdi-message-text-clock',
-          title: 'Messages',
-          to: '/notify'
+          icon: "mdi-message-text-clock",
+          title: "Messages",
+          to: "/app/notify"
         }
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Ez.notify'
-    }
+      title: "Ez.notify"
+    };
   },
   methods: {
     async logout() {
       await auth().signOut();
-      this.$router.push('/login');
+      this.$router.push("/app/login");
     }
   }
-}
+};
 </script>
 
 <style>
 .nav-bar {
-  background: linear-gradient(
-    307deg,
-    #00BFA6 0%,
-    #00BFA6 100%
-  );
+  background: linear-gradient(307deg, #00bfa6 0%, #00bfa6 100%);
 }
 </style>

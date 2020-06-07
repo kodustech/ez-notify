@@ -7,8 +7,7 @@
 
 <script>
 import Snackbar from "~/components/snackbar";
-
 export default {
-  components: { Snackbar },
+  components: { Snackbar }
 };
 </script>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="55.997" height="55.997" viewBox="0 0 55.997 55.997">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="55.997" height="55.997" fill="none"/>
+    </clipPath>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#2bdbdc"/>
+      <stop offset="1" stop-color="#0067f4"/>
+    </linearGradient>
+  </defs>
+  <g id="Symbol_3_14" data-name="Symbol 3 – 14" transform="translate(0)" clip-path="url(#clip-path)">
+    <path id="Subtraction_34" data-name="Subtraction 34" d="M18.668,37.331h0V26.666a8.009,8.009,0,0,0-8-8H0A18.67,18.67,0,0,1,35.866,11.4a18.66,18.66,0,0,1-17.2,25.931Z" transform="translate(18.664)" fill="url(#linear-gradient)"/>
+    <rect id="Rectangle_1758" data-name="Rectangle 1758" width="37.331" height="37.331" rx="8" transform="translate(0 18.666)" fill="url(#linear-gradient)"/>
+    <path id="Intersection_4" data-name="Intersection 4" d="M0,18.667A18.666,18.666,0,0,1,18.667,0V10.667a8,8,0,0,1-8,8Z" transform="translate(18.664 37.33)" fill="url(#linear-gradient)"/>
+    <path id="Intersection_3" data-name="Intersection 3" d="M0,18.667V8A8,8,0,0,1,8,0H18.667A18.666,18.666,0,0,1,0,18.667Z" transform="translate(-0.002 18.664)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

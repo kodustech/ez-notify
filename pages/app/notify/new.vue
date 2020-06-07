@@ -293,7 +293,7 @@ export default {
           fireAdd("notification", schedule);
         }
         this.showSuccessMessage({ message: "Messages successfully scheduled" });
-        this.$router.push("/notify");
+        this.$router.push("/app/notify");
       } catch (error) {
         this.showErrorMessage({ message: error.message });
       }

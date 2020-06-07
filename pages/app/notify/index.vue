@@ -160,7 +160,7 @@ export default {
         : (this.itemsFiltered = this.items.filter(x => !x.sended));
     },
     NewMessage() {
-      this.$router.push("/notify/new");
+      this.$router.push("/app/notify/new");
     }
   }
 };
